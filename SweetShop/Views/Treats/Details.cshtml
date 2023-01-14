@@ -1,0 +1,57 @@
+@{
+  Layout = "_Layout";
+}
+@model SweetShop.Models.Treat
+@using SweetShop.Models
+<h1>Treat Details</h1>
+
+<h3>@Model.Name</h3>
+
+@if (Model.TreatFlavors.Count != 0)
+{
+  <table class="table table-striped">
+    <tr>
+      <th>Flavor Name</th>
+      @if (User.Identity.IsAuthenticated)
+      {
+        <th>Manage</th>
+
+      }
+    </tr>
+    @foreach (TreatFlavor entry in Model.TreatFlavors)
+    {
+      <tr>
+        <td>@Html.ActionLink($"{entry.Flavor.Name}", "Details", "Flavors", new { id = entry.FlavorId})</td>
+        @if (User.Identity.IsAuthenticated)
+        {
+          <td>
+            @using (Html.BeginForm("RemoveJoin", "Flavors", routeValues: new { joinId = entry.TreatFlavorId, type = 1 }))
+            {
+              <input type="submit" value="Remove" class="btn btn-secondary">
+            }
+          </td>
+        }
+      </tr>
+    }
+  </table>
+}
+else
+{
+  <h4>There are no flavors assoicated with this treat.</h4>
+}
+@if (User.Identity.IsAuthenticated)
+{
+  @using (Html.BeginForm("AddFlavor", "Treats"))
+  {
+    @Html.HiddenFor(treat => treat.TreatId)
+
+    @Html.Label("Flavor")
+    @:&nbsp;
+
+    @Html.DropDownList("FlavorId")
+    @:&nbsp;
+<input type="submit" value="Add">
+  }
+  <p>@Html.ActionLink("Edit Treat", "Edit", new { id = @Model.TreatId })</p>
+
+}

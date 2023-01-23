@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SweetShop.Models
 {
+  [Authorize]
   public class FlavorsController : Controller
   {
     private readonly SweetShopContext _db;

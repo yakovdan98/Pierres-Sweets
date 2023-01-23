@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SweetShop.Controllers
 {
+  [Authorize]
   public class TreatsController : Controller
   {
     // Routes
@@ -76,30 +77,13 @@ namespace SweetShop.Controllers
       }
     }
 
-    //     [HttpPost]
-    //     public ActionResult Delete(int id)
-    //     {
-    //       Author thisAuthor = _db.Authors.FirstOrDefault(author => author.AuthorId == id);
-    //       _db.Authors.Remove(thisAuthor);
-    //       _db.SaveChanges();
-    //       return RedirectToAction("Index");
-    //     }
-
-    //     public ActionResult AddBook(int id)
-    //     {
-    //       Author thisAuthor = _db.Authors.FirstOrDefault(entry => entry.AuthorId == id);
-    //       ViewBag.BookId = new SelectList(_db.Books, "BookId", "Title");
-    //       return View(thisAuthor);
-    //     }
 
     [HttpPost]
     public ActionResult AddFlavor(Treat treat, int flavorId)
     {
-      // check if already an AuthorBook association
 #nullable enable
       TreatFlavor? entry = _db.TreatFlavors.FirstOrDefault(entry => (entry.TreatId == treat.TreatId && entry.FlavorId == flavorId));
 #nullable disable
-      // if no AuthorBook association, create one
       if (entry == null && flavorId != 0)
       {
         _db.TreatFlavors.Add(new TreatFlavor { TreatId = treat.TreatId, FlavorId = flavorId });
@@ -108,6 +92,14 @@ namespace SweetShop.Controllers
       return RedirectToAction("Details", "Treats", new { id = treat.TreatId });
     }
 
+    [HttpPost]
+    public ActionResult Delete(int id)
+    {
+      Treat thisTreat = _db.Treats.FirstOrDefault(treat => treat.TreatId == id);
+      _db.Treats.Remove(thisTreat);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
 
   }
 }

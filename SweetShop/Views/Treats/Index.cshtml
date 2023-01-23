@@ -22,7 +22,7 @@
         @if (User.Identity.IsAuthenticated)
         {
           <td>
-            @using (Html.BeginForm("Delete", "Books", routeValues: new { id = treat.TreatId }))
+            @using (Html.BeginForm("Delete", "Treats", routeValues: new { id = treat.TreatId }))
             {
               <input type="submit" value="Delete" class="btn btn-danger">
             }
